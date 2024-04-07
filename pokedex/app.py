@@ -36,6 +36,13 @@ def get_pokemon(pokemon_id: str):
         )
     except:
         return redirect(url_for("index"))
+    
+#add a route that calls prefix_pokemon_name
+@app.route("/prefix/<name>")
+def prefix_name(name):
+    prefix = request.args.get("prefix")
+    return helper.prefix_pokemon_name(name, prefix)
+
 
 
 def get_db():

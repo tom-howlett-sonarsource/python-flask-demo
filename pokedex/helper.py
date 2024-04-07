@@ -48,6 +48,10 @@ def fetch_pokemon_by_start(wrapper: ConnectionWrapper, start_letter: str):
     statement = f"SELECT * FROM POKEDEX WHERE name LIKE '{start_letter}%'"
     return wrapper.__conn.execute(statement).fetchall()
 
+#add a method to prefix a pokemon name with a given string and return the new name
+def prefix_pokemon_name(name: str, prefix: str):
+    return prefix + name
+
 
 def register_subscriber(wrapper: ConnectionWrapper, email):
     pattern = re.compile(r"(.*)@(.*\..*)")
