@@ -39,8 +39,20 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov --cov-report xml:cov.xml --cov-config=.coveragerc
+    - shell: bash
+      run: |
+        echo 'SONAR_USER_HOME=/github/workspace/.sonar' >> $GITHUB_ENV
+        mkdir -p .sonar/cache
+    - uses: actions/cache/restore@v3
+      with:
+        path: .sonar/cache
+        key: ${{ runner.os }}-sonar
     - name: SQ Analyse
       uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    - uses: actions/cache/save@v3
+      with:
+        path: .sonar/cache
+        key: ${{ runner.os }}-sonar
