@@ -35,6 +35,19 @@ class ConnectionWrapper:
 def fetch_all_pokemons(wrapper: ConnectionWrapper):
     return wrapper.get_all_pokemons()
 
+#add a method call fetch_pokemon_by_name that accepts a name and returns the pokemon with that name
+def fetch_pokemon_by_name(wrapper: ConnectionWrapper, pokemon_name: str):
+    statement = f"SELECT * FROM POKEDEX WHERE name = '{pokemon_name}'"
+    result = wrapper.__conn.execute(statement).fetchone()
+    if result is None:
+        raise ValueError("Pokemon not found")
+    return result
+
+#add a method call fetch_pokemon_by_start that accepts a letter and returns all the pokemon whose name starts with that letter
+def fetch_pokemon_by_start(wrapper: ConnectionWrapper, start_letter: str):
+    statement = f"SELECT * FROM POKEDEX WHERE name LIKE '{start_letter}%'"
+    return wrapper.__conn.execute(statement).fetchall()
+
 
 def register_subscriber(wrapper: ConnectionWrapper, email):
     pattern = re.compile(r"(.*)@(.*\..*)")
