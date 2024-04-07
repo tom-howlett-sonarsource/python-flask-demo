@@ -23,6 +23,28 @@ def subscribe():
     return redirect(url_for("index"))
 
 
+@app.route("/<pokemon_id>")
+def get_pokemon(pokemon_id: str):
+    try:
+        _, pokemon_name, image_url, description = helper.fetch_pokemon(get_db(), pokemon_id)
+        return render_template(
+            "pokemon.html",
+            description=description,
+            sprites=[image_url],
+            name=pokemon_name,
+            pokemon_id=pokemon_id,
+        )
+    except:
+        return redirect(url_for("index"))
+    
+#add a route that calls prefix_pokemon_name
+@app.route("/prefix/<name>")
+def prefix_name(name):
+    prefix = request.args.get("prefix")
+    return helper.prefix_pokemon_name(name, prefix)
+
+
+
 def get_db():
     if "db" not in g:
         g.db = helper.ConnectionWrapper(app.config["DATABASE"])
